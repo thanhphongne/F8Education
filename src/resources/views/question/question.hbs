@@ -1,0 +1,57 @@
+<div class='mt-4'>
+<div class='card' style="width: 72rem;">
+<div class='card-body'>
+    <form method='POST' action='/question/store' >
+        <div class="card-header">
+        <h4>Đăng câu hỏi</h4>
+        </div>
+        <div class='form-group'>
+        <textarea class='form-control' name='question' placeholder="Nhập vào câu trả hỏi của bạn..."></textarea>
+        </div>
+        <div class='form-group'>
+        <label for='image'>Hình ảnh</label>
+            <input
+                type='file'
+                class='form-control'
+                id='image'
+                name='image'
+            />
+        </div>
+        <button type='submit' class='btn btn-primary'>Đăng</button>
+    </form>
+</div>
+</div>
+
+    {{#each questions}}
+        <div class='row'>
+            <div class='col-sm-12 col-lg-4'>
+                <div class='card' style="width: 72rem;">
+                    <div class='card-body'>
+                        <a href='/questions/{{this.slug}}'>
+                                <h4 class='card-title'>{{this.question}}</h4>
+                        </a>
+                        <a href='/questions/{{this.slug}}'>
+                            <img
+                                class='card-img-top'
+                                src='{{this.image}}'
+                                alt='{{this.image}}'
+                            />
+                        </a>
+                        <h5 class='card-title'>{{this.answers.[0]}}</h5>
+                        <h5 class='card-title'>{{this.answers.[1]}}</h5>
+                        
+                        <form method='POST' action='/question/{{this._id}}?_method=PUT'>
+                            <div class='form-group'>
+                                <h4>Trả lời</h4>
+                            </div>
+                            <div class='form-group'>
+                                <textarea class='form-control' id='answers' name='answers' placeholder="Nhập vào câu trả lời của bạn..."></textarea>
+                            </div>
+                            <button type='submit' class='btn btn-primary'>Đăng</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
