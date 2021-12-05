@@ -46,15 +46,15 @@ const login = (req, res, next) => {
                     }
                     if(result){
                         let token = jwt.sign({name: user.name}, 'thesecrettoken', {expiresIn: '30s'});
-                        let refreshtoken = jwt.sign({name: user.name}, 'thesecretrefreshtoken', {expiresIn: '2h'});
-                        res.json({
+                        // let refreshtoken = jwt.sign({name: user.name}, 'therefreshtokensecret', {expiresIn: '2h'});
+                        res.status(200).json({
                             message: 'Login successful',
-                            token,
-                            refreshtoken
+                            token
+                            // refreshtoken
                         })
                         // res.redirect('/')
                     }else{
-                        res.json({
+                        res.status(200).json({
                             message: 'Password incorrect'
                         })
                     }
@@ -67,32 +67,31 @@ const login = (req, res, next) => {
             }
         })
 }
-const refreshtoken = (req, res, next) => {
-    const refreshtoken = req.body.refreshtoken
-    jwt.verify(refreshtoken, 'thesecretrefreshtoken', function(err,decode){
-        if(err) {
-            res.status(400).json({
-                err
-            })
-        }
-        else {
-            let token = jwt.sign({name: decode.name}, 'thesecrettoken', {expiresIn: '60s'})
-            let refreshtoken = req.body.refreshtoken
-            res.status(200).json({
-                message: 'Token refreshed successfully',
-                token,
-                refreshtoken
-            })
-
-        }
-    })
-}
+// const refreshToken = (req, res, next) => {
+//     const refreshToken = req.body.refreshToken
+//     jwt.verify(refreshToken, 'therefreshtokensecret', function(err,decode){
+//         if(err) {
+//             res.status(400).json({
+//                 err
+//             })
+//         }
+//         else {
+//             let token = jwt.sign({name: decode.name}, 'thesecrettoken', {expiresIn: '60s'})
+//             let refreshToken = req.body.refreshToken
+//             res.status(200).json({
+//                 message: 'Token refreshed successfully',
+//                 token,
+//                 refreshToken
+//             })
+//         }
+//     })
+// }
 
 
 module.exports ={ 
     registerForm,
     loginForm,
     register,
-    login,
-    refreshtoken
+    login
+    // refreshToken
 }

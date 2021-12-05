@@ -22,14 +22,12 @@ class QuestionController {
         })
         .catch(next);
     }
-    //[PUT] /question/:id
+    //[PUT] /question/id
     answer(req, res, next) {
         Question.updateOne({_id: req.params.id}, req.body)
             .then(() => res.redirect('/question'))
             .catch(next)
     }
-
-
 }
 
 module.exports = new QuestionController();

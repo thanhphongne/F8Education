@@ -7,7 +7,7 @@ const AuthController = require('../app/controllers/AuthController');
 
 router.post('/register', AuthController.register);
 router.post('/login', AuthController.login);
-router.post('/refreshtoken', AuthController.refreshtoken);
+// router.post('/refresh-token', AuthController.refreshToken);
 router.get('/registerForm', AuthController.registerForm);
 router.get('/loginForm', AuthController.loginForm);
 

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 async function connect() {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/f8education', {
+        await mongoose.connect('mongodb+srv://btphong:redstore@redstore.mqf9s.mongodb.net/F8Education?retryWrites=true&w=majority', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
