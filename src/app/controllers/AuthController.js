@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const bcrypt= require('bcryptjs');
+const CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 
 const registerForm = (req, res) => {
@@ -9,83 +9,54 @@ const loginForm = (req, res) => {
     res.render('auth/login');
 }
 
-const register = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
-        if(err) {
-            res.json({ 
-                error: err
-            })
-        }
-        let user = new User ({
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            password: hashedPass
-        })
-        user.save()
-            .then(user => {
-                res.redirect('/auth/loginForm')
-            })
-            .catch(error => {
-                res.json({ 
-                    message: 'Error saving user'
-                })
-            })
-    })
+const register = async (req, res) => {
+    const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.PASS_SEC
+        ).toString(),
+      });
+    
+      try {
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser);
+      } catch (err) {
+        res.status(500).json(err);
+      }
 }
-const login = (req, res, next) => {
-    var username = req.body.email
-    var password = req.body.password
+const login = async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.body.username });
+        !user && res.status(401).json("Wrong credentials!");
+    
+        const hashedPassword = CryptoJS.AES.decrypt(
+          user.password,
+          process.env.PASS_SEC
+        );
+        const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+    
+        OriginalPassword !== req.body.password &&
+          res.status(401).json("Wrong credentials!");
+    
+        const accessToken = jwt.sign(
+          {
+            id: user._id,
+            isAdmin: user.isAdmin,
+          },
+          process.env.JWT_SEC,
+          {expiresIn:"3d"}
+        );
+    
+        const { password, ...others } = user._doc;
+    
+        res.status(200).json({...others, accessToken});
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    }
 
-    User.findOne({ $or: [{ email: username},{phone:username}]})
-        .then((user) => {
-            if(user){
-                bcrypt.compare(password, user.password, function(err, result) {
-                    if(err) {
-                        error: err
-                    }
-                    if(result){
-                        let token = jwt.sign({name: user.name}, 'thesecrettoken', {expiresIn: '30s'});
-                        // let refreshtoken = jwt.sign({name: user.name}, 'therefreshtokensecret', {expiresIn: '2h'});
-                        res.status(200).json({
-                            message: 'Login successful',
-                            token
-                            // refreshtoken
-                        })
-                        // res.redirect('/')
-                    }else{
-                        res.status(200).json({
-                            message: 'Password incorrect'
-                        })
-                    }
-                })
-            }
-            else {
-                res.json({ 
-                    message: 'No user found'
-                })
-            }
-        })
-}
-// const refreshToken = (req, res, next) => {
-//     const refreshToken = req.body.refreshToken
-//     jwt.verify(refreshToken, 'therefreshtokensecret', function(err,decode){
-//         if(err) {
-//             res.status(400).json({
-//                 err
-//             })
-//         }
-//         else {
-//             let token = jwt.sign({name: decode.name}, 'thesecrettoken', {expiresIn: '60s'})
-//             let refreshToken = req.body.refreshToken
-//             res.status(200).json({
-//                 message: 'Token refreshed successfully',
-//                 token,
-//                 refreshToken
-//             })
-//         }
-//     })
-// }
 
 
 module.exports ={ 
@@ -93,5 +64,4 @@ module.exports ={
     loginForm,
     register,
     login
-    // refreshToken
 }

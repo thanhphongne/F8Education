@@ -1,23 +1,42 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const authenticate = (req, res, next) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1]
-        const decode = jwt.verify(token,'thesecrettoken')
-        req.user = decode
-        next()
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers.token;
+    if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    console.log(token);
+    jwt.verify(token, process.env.JWT_SEC, (err, user) => {
+        if (err) res.status(403).json("Token is not valid!");
+      req.user = user;
+      next();
+    });
+  } else {
+    return res.status(401).json("You are not authenticated!");
+  }
+};
+
+const verifyTokenAndAuthorization = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.id === req.params.id || req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("You are not alowed to do that!");
     }
-    catch(error) {
-        if(error.name == "TokenExpiredError"){
-            res.status(401).json({
-                message: "Token Expired!"
-            })
-        } else {
-            res.json({
-                message: 'Authentication Failed',
-                
-            })
-        }
+  });
+};
+
+const verifyTokenAndAdmin = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("You are not alowed to do that!");
     }
-}
-module.exports = authenticate
+  });
+};
+
+module.exports = {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+};

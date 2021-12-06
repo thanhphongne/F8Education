@@ -15,7 +15,7 @@ const db = require('./config/db');
 
 //connect toi db
 db.connect();
-
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
@@ -23,7 +23,7 @@ app.use(
         extended: true,
     }),
 );
-app.use(express.json());
+
 //http logger
 app.use(morgan('combined'));
 

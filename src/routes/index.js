@@ -4,9 +4,14 @@ const siteRouter = require('./site');
 const meRouter = require('./me');
 const questionRouter = require('./question');
 const authRouter = require('./auth');
+const {
+    verifyToken,
+    verifyTokenAndAuthorization,
+    verifyTokenAndAdmin,
+} = require('../app/middlewares/authenticate');
 
 function route(app) {
-    app.use('/me', meRouter);
+    app.use('/me',verifyToken, meRouter);
     app.use('/news', newsRouter);
     app.use('/courses', coursesRouter);
     app.use('/question', questionRouter);

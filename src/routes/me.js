@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const authenticate = require('../app/middlewares/authenticate');
+// const verifyToken = require('../app/middlewares/authenticate');
 
 const meController = require('../app/controllers/MeController');
 // courseController.index
