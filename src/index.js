@@ -1,11 +1,12 @@
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
+const bodyParser= require('body-parser')
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 
-const SortMiddleware = require('./app/middlewares/sortMiddleware')
+const SortMiddleware = require('./app/middlewares/sortMiddleware');
 
 const exp = require('constants');
 const app = express();
@@ -16,6 +17,7 @@ const db = require('./config/db');
 //connect toi db
 db.connect();
 app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
@@ -37,7 +39,7 @@ app.engine(
     'hbs',
     handlebars({
         extname: '.hbs',
-        helpers: require('./helpers/handlebars')
+        helpers: require('./helpers/handlebars'),
     }),
 );
 app.set('view engine', 'hbs');

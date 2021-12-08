@@ -28,60 +28,61 @@ class CourseController {
     }
     // [GET] /courses/:id/edit
     edit(req, res, next) {
-        Course.findById(req.params.id)
-            .then(course => res.render('courses/edit', {
-                course: mongooseToObject(course)
-            }))
+        Course.findById(req.params.id).then((course) =>
+            res.render('courses/edit', {
+                course: mongooseToObject(course),
+            }),
+        );
     }
     // [PUT] /courses/:id
-    update(req, res, next){
-        Course.updateOne({_id: req.params.id}, req.body)
+    update(req, res, next) {
+        Course.updateOne({ _id: req.params.id }, req.body)
             .then(() => res.redirect('/me/stored/courses'))
             .catch(next);
     }
     //[DELETE] /courses/:id
-    delete(req, res, next){
-        Course.delete({ _id: req.params.id})
+    delete(req, res, next) {
+        Course.delete({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
     }
     //[DELETE] /courses/:id/force
-    forceDelete(req, res, next){
-        Course.deleteOne({ _id: req.params.id})
+    forceDelete(req, res, next) {
+        Course.deleteOne({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
     }
 
     // [PATCH] /courses/:id/restore
     restore(req, res, next) {
-        Course.restore({ _id: req.params.id})
+        Course.restore({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
     }
     // [POST] /course/handle-form-actions
-    handleFormActions(req, res, next){
+    handleFormActions(req, res, next) {
         switch (req.body.action) {
             //xoa mem
             case 'delete':
-                Course.delete({ _id: { $in: req.body.courseIds }})
+                Course.delete({ _id: { $in: req.body.courseIds } })
                     .then(() => res.redirect('back'))
                     .catch(next);
                 break;
             //xoa vinh vien
             case 'deleteforce':
-                Course.deleteMany({ _id: { $in: req.body.courseIds }})
+                Course.deleteMany({ _id: { $in: req.body.courseIds } })
                     .then(() => res.redirect('back'))
                     .catch(next);
                 break;
             //khoi phuc
             case 'restore':
-                Course.restore({ _id: { $in: req.body.courseIds }})
+                Course.restore({ _id: { $in: req.body.courseIds } })
                     .then(() => res.redirect('back'))
                     .catch(next);
                 break;
 
             default:
-                res.json({message: 'Action is invalid'})
+                res.json({ message: 'Action is invalid' });
         }
     }
 }

@@ -1,11 +1,11 @@
 const Question = require('../models/Question');
 const { mutipleMongooseToObject } = require('../../util/mongoose');
-const { mongooseToObject } = require('../../util/mongoose');
+
 
 class QuestionController {
-
     //[POST] /question/store
     store(req, res, next) {
+        req.body.image = req.file.path;
         const question = new Question(req.body);
         question
             .save()
@@ -13,20 +13,20 @@ class QuestionController {
             .catch(next);
     }
     //[GET] /question
-    index (req, res, next) {
+    index(req, res, next) {
         Question.find({})
-        .then((questions) => {
-            res.render('question/question', {
-                questions: mutipleMongooseToObject(questions),
-            });
-        })
-        .catch(next);
+            .then((questions) => {
+                res.render('question/question', {
+                    questions: mutipleMongooseToObject(questions),
+                });
+            })
+            .catch(next);
     }
-    //[PUT] /question/id
+    //[PUT] /question/:id
     answer(req, res, next) {
-        Question.updateOne({_id: req.params.id}, req.body)
+        Question.updateOne({ _id: req.params.id }, req.body)
             .then(() => res.redirect('/question'))
-            .catch(next)
+            .catch(next);
     }
 }
 

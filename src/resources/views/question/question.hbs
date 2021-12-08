@@ -1,7 +1,7 @@
 <div class='mt-4'>
 <div class='card' style="width: 72rem;">
 <div class='card-body'>
-    <form method='POST' action='/question/store' >
+    <form method='POST' action='/question/store' enctype="multipart/form-data" >
         <div class="card-header">
         <h4>Đăng câu hỏi</h4>
         </div>
@@ -30,13 +30,9 @@
                         <a href='/questions/{{this.slug}}'>
                                 <h4 class='card-title'>{{this.question}}</h4>
                         </a>
-                        <a href='/questions/{{this.slug}}'>
-                            <img
-                                class='card-img-top'
-                                src='{{this.image}}'
-                                alt='{{this.image}}'
-                            />
-                        </a>
+                        
+                            <img src="uploads/7b2b9dfa9d7fc75ef38912ab556bdcf1.png">
+                        
                         <h5 class='card-title'>{{this.answers.[0]}}</h5>
                         <h5 class='card-title'>{{this.answers.[1]}}</h5>
                         

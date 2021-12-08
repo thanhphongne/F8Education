@@ -1,0 +1,47 @@
+<div class="mt-4" name="container-form" >
+    <h3>Khóa học đang học</h3>
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">
+                    Tên khóa học
+                    {{{sortable 'name' _sort}}}
+                </th>
+
+                <th scope="col">
+                    Thời gian tham gia
+                    {{{sortable 'createdAt' _sort}}}
+                </th>
+                <th scope="col">
+                    Link tới khóa học
+                    {{{sortable 'createdAt' _sort}}}
+                </th>
+                <th scope="col">Đã hoàn thành</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each carts}}
+            <tr>
+                
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.createdAt}}</td>
+                <td><a href="/courses/{{this.courseSlug}}">{{this.courseSlug}}</a></td>
+                <td>
+                    <form method="POST" action="/cart/delete/{{this._id}}">
+                        <button type="submit">Đã hoàn thành</button>
+                    </form>
+                </td>
+            </tr>
+            {{else}}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        Bạn chưa theo khóa học nào.
+                        <a href="/">Chọn khóa học</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

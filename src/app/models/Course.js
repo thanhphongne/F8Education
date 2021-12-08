@@ -11,7 +11,7 @@ const courseSchema = new Schema(
         name: { type: String, required: true },
         description: { type: String },
         image: { type: String },
-        level:{ type: String },
+        level: { type: String },
         videoid: { type: String, required: true },
         slug: { type: String, slug: 'name', unique: true },
     },
@@ -21,23 +21,23 @@ const courseSchema = new Schema(
     },
 );
 // customquery helper
-courseSchema.query.sortable = function (req){
-    if(req.query.hasOwnProperty('_sort')) {
+courseSchema.query.sortable = function (req) {
+    if (req.query.hasOwnProperty('_sort')) {
         const isValidType = ['asc', 'desc'].includes(req.query.type);
         return this.sort({
             [req.query.column]: isValidType ? req.query.type : 'desc',
         });
     }
     return this;
-}
+};
 
 //Add plugin
 mongoose.plugin(slug);
 
 // Course.plugin(AutoIncrement);
-courseSchema.plugin(mongooseDelete, { 
-    deletedAt : true,
-    overrideMethods: 'all' 
+courseSchema.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: 'all',
 });
 
 module.exports = mongoose.model('Course', courseSchema);

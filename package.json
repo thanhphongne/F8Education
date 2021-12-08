@@ -4,7 +4,7 @@
     "description": "frist project nodejs",
     "main": "src/index.js",
     "scripts": {
-        "makeup": "lint-staged",
+        "prettier": "prettier --tab-width 4 --single-quote --trailing-comma all --write package.json src/**/**/*.js",
         "start": "nodemon --inspect src/index.js",
         "watch": "node-sass --watch src/resources/scss/app.scss src/public/css/app.css",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -34,6 +34,8 @@
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "cookie-parser": "^1.4.6",
         "crypto-js": "^4.1.1",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
