@@ -5,6 +5,7 @@ const bodyParser= require('body-parser')
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
 
 const SortMiddleware = require('./app/middlewares/sortMiddleware');
 
@@ -19,6 +20,7 @@ db.connect();
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 
 app.use(
     express.urlencoded({

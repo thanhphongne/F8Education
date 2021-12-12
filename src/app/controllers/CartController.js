@@ -3,10 +3,13 @@ const Course = require('../models/Course');
 const { mongooseToObject } = require('../../util/mongoose');
 const { mutipleMongooseToObject } = require('../../util/mongoose');
 const { render } = require('node-sass');
-class CartController {
+const jwt = require('jsonwebtoken');
 
+
+
+class CartController {
     index(req, res, next) {
-        Cart.find({})
+        Cart.find({userId: req.cookies.userId})
             .then((carts) => {
                 res.render('cart', {
                     carts: mutipleMongooseToObject(carts),
@@ -14,12 +17,13 @@ class CartController {
             })
             .catch(next);
     }
-    store (req, res) {
-        // res.send(req.params.id);
+    store (req, res, next) {
+        req.body.userId = req.cookies.userId;
         const newCart = new Cart(req.body);
         newCart
             .save()
             .then(() => res.redirect('/'))
+            .catch(next);
     }
 
     delete(req, res, next) {

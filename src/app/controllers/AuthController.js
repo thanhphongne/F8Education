@@ -22,7 +22,7 @@ const register = async (req, res) => {
 
     try {
         const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        res.status(201).redirect('/auth/loginForm');
         
     } catch (err) {
         res.status(500).json(err);
@@ -30,9 +30,10 @@ const register = async (req, res) => {
 };
 
 //login
-const login = async (req, res) => {
+const login = async (req, res, next) => {
+    console.log(req.body)
     try {
-        const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ email: req.body.email });
         !user && res.status(401).json('Wrong credentials!');
 
         const hashedPassword = CryptoJS.AES.decrypt(
@@ -47,34 +48,36 @@ const login = async (req, res) => {
         const accessToken = jwt.sign(
             {
                 id: user._id,
+                name: user.name,
                 isAdmin: user.isAdmin,
             },
             process.env.JWT_SEC,
             { expiresIn: '3d' },
         );
 
-        // await window.localStorage.setItem('token', JSON.stringify(accessToken));
-        // await setGlobalState({
-        //     ...globalState,
-        //     token: accessToken,
-        //     userId: user.id
-        // })
+        //const { password, ...others } = user._doc;
 
-        const { password, ...others } = user._doc;
+        res
+            .status(201)
+            .cookie('accessToken', accessToken)
+            .cookie('userId', user._id)
+            .redirect('/')
 
-        res.status(200).json({ ...others, accessToken });
-        res.render('/', { token: accessToken });
-        // localStorage.setItem('userdetail', res.data);
-
+        
     } catch (err) {
         res.status(500).json(err);
     }
 };
-
+const logout = (req, res) => {
+    res.clearCookie('accessToken', { path: '/' });
+    res.clearCookie('userId', { path: '/' });
+    res.redirect('/')
+}
 
 module.exports = {
     registerForm,
     loginForm,
     register,
-    login
+    login,
+    logout
 };

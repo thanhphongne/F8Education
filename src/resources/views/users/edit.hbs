@@ -1,0 +1,56 @@
+<div class='mt-4'>
+    <h3>Cập nhật người dùng</h3>
+    <form method='POST' action='/users/{{user._id}}?_method=PUT'>
+        <div class='form-group'>
+            <label for='name'>Tên người dùng</label>
+            <input 
+                type='text' 
+                class='form-control' 
+                value='{{user.name}}'
+                id='name' 
+                name='name' >
+        </div>
+        
+        <div class='form-group'>
+            <label for='email'>Email</label>
+            <input
+                type='text'
+                class='form-control'
+                value='{{user.email}}'
+                id='email'
+                name='email'
+            />
+        </div>
+        <div class='form-group'>
+            <label for='phone'>Số điện thoại</label>
+            <input
+                type='text'
+                class='form-control'
+                value='{{user.phone}}'
+                id='phone'
+                name='phone'
+            />
+        </div>
+        <div class='form-group'>
+            <label for='phone'>Quyền quản trị</label>
+            <input
+                type='text'
+                class='form-control'
+                value='{{user.isAdmin}}'
+                id='isAdmin'
+                name='isAdmin'
+            />
+        </div>
+        <div class='form-group'>
+            <label for='password'>Mật khẩu</label>
+            <input
+                type='text'
+                class='form-control'
+                value='{{hashedPassword}}'
+                id='password'
+                name='password'
+            />
+        </div>
+        <button type='submit' class='btn btn-primary'>Lưu lại</button>
+    </form>
+</div>

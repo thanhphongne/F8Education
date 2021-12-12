@@ -8,14 +8,14 @@ const {
 
 const courseController = require('../app/controllers/CourseController');
 
-router.get('/create', courseController.create);
-router.post('/store', courseController.store);
-router.get('/:id/edit', courseController.edit);
-router.post('/handle-form-actions', courseController.handleFormActions);
-router.put('/:id', courseController.update);
+router.get('/create',verifyTokenAndAdmin, courseController.create);
+router.post('/store',verifyTokenAndAdmin, courseController.store);
+router.get('/:id/edit',verifyTokenAndAdmin, courseController.edit);
+router.post('/handle-form-actions',verifyTokenAndAdmin, courseController.handleFormActions);
+router.put('/:id',verifyTokenAndAdmin, courseController.update);
 router.patch('/:id/restore', courseController.restore);
-router.delete('/:id', courseController.delete);
-router.delete('/:id/force', courseController.forceDelete);
+router.delete('/:id',verifyTokenAndAdmin, courseController.delete);
+router.delete('/:id/force',verifyTokenAndAdmin, courseController.forceDelete);
 router.get('/:slug', courseController.show);
 
 module.exports = router;

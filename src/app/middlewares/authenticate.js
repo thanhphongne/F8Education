@@ -1,27 +1,29 @@
 const jwt = require('jsonwebtoken');
 
+
 const verifyToken = (req, res, next) => {
     
-    const authHeader = req.headers.token;
+    const authHeader = req.cookies.accessToken;
     if (authHeader) {
-        const token = authHeader.split(' ')[1];
+        const token = authHeader;
         console.log(token);
         jwt.verify(token, process.env.JWT_SEC, (err, user) => {
-            if (err) res.status(403).json('Token is not valid!');
+            if (err) res.status(403).json('Đăng nhập thất bại!');
             req.user = user;
+            console.log(user);
             next();
         });
     } else {
-        return res.status(401).json('You are not authenticated!');
+        return res.status(401).json('Bạn chưa đăng nhập!');
     }
 };
 
 const verifyTokenAndAuthorization = (req, res, next) => {
     verifyToken(req, res, () => {
-        if (req.user.id === req.params.id || req.user.isAdmin) {
+        if (req.user.id === req.cookies.userId || req.user.isAdmin) {
             next();
         } else {
-            res.status(403).json('You are not alowed to do that!');
+            res.status(403).json('Đăng nhập để thực hiện hành động trên!');
         }
     });
 };
@@ -31,7 +33,7 @@ const verifyTokenAndAdmin = (req, res, next) => {
         if (req.user.isAdmin) {
             next();
         } else {
-            res.status(403).json('You are not alowed to do that!');
+            res.status(403).json('Hành động đang thực hiện cần quyền quản trị!');
         }
     });
 };
