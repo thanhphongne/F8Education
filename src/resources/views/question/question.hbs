@@ -1,26 +1,29 @@
-<div class='mt-4'>
-<div class='card' style="width: 72rem;">
-<div class='card-body'>
-    <form method='POST' action='/question/store' enctype="multipart/form-data" >
+<div class="mt-4">
+  <div class="card" style="width: 72rem;">
+    <div class="card-body">
+      <form
+        method="POST"
+        action="/question/store"
+        enctype="multipart/form-data"
+      >
         <div class="card-header">
-        <h4>Đăng câu hỏi</h4>
+          <h4>Đăng câu hỏi</h4>
         </div>
-        <div class='form-group'>
-        <textarea class='form-control' name='question' placeholder="Nhập vào câu trả hỏi của bạn..."></textarea>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            name="question"
+            placeholder="Nhập vào câu trả hỏi của bạn..."
+          ></textarea>
         </div>
-        <div class='form-group'>
-        <label for='image'>Hình ảnh</label>
-            <input
-                type='file'
-                class='form-control'
-                id='image'
-                name='image'
-            />
+        <div class="form-group">
+          <label for="image">Hình ảnh</label>
+          <input type="file" class="form-control" id="image" name="image" />
         </div>
-        <button type='submit' class='btn btn-primary'>Đăng</button>
-    </form>
-</div>
-</div>
+        <button type="submit" class="btn btn-primary">Đăng</button>
+      </form>
+    </div>
+  </div>
 
     {{#each questions}}
         <div class='row'>
@@ -49,5 +52,7 @@
                 </div>
             </div>
         </div>
-    {{/each}}
+      </div>
+    </div>
+  {{/each}}
 </div>
