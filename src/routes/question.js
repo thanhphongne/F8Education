@@ -11,8 +11,10 @@ const upload = multer({ dest: "./src/public/uploads/" });
 
 const questionController = require("../app/controllers/QuestionController");
 
+router.get("/:slug", questionController.show);
 router.put("/:id",verifyTokenAndAuthorization, questionController.answer);
 router.post("/store", upload.single("image"),verifyTokenAndAuthorization, questionController.store);
 router.get("/", questionController.index);
+
 
 module.exports = router;

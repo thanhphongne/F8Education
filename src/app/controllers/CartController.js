@@ -20,6 +20,7 @@ class CartController {
     store (req, res, next) {
         req.body.userId = req.cookies.userId;
         const newCart = new Cart(req.body);
+        // console.log(newCart);
         newCart
             .save()
             .then(() => res.redirect('/'))

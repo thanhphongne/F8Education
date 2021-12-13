@@ -8,7 +8,7 @@ const {
 
 const cartController = require('../app/controllers/CartController');
 
-router.post('/',verifyTokenAndAuthorization, cartController.store);
+router.post('/:slug',verifyTokenAndAuthorization, cartController.store);
 router.post('/delete/:id',verifyTokenAndAuthorization, cartController.delete);
 router.get('/',verifyTokenAndAuthorization, cartController.index);
 

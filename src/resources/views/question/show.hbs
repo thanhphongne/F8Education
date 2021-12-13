@@ -1,0 +1,28 @@
+
+        <div class='row'>
+            <div class='col-sm-12 col-lg-4'>
+                <div class='card' style="width: 72rem;">
+                    <div class='card-body'>
+                        <a href='/questions/{{question.slug}}'>
+                                <h4 class='card-title'>{{question.question}}</h4>
+                        </a>
+                        
+                            <img src="http://localhost:3000/{{question.image}}" />
+                        {{#each question.answers}}
+                        <h5 class='card-title'>{{this}}</h5>
+                        {{/each}}
+                        <form method='POST' action='/question/{{question._id}}?_method=PUT'>
+                            <div class='form-group'>
+                                <h4>Trả lời</h4>
+                            </div>
+                            <div class='form-group'>
+                                <textarea class='form-control' id='answers' name='answers[]' placeholder="Nhập vào câu trả lời của bạn..."></textarea>
+                            </div>
+                            <button type='submit' class='btn btn-primary'>Đăng</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const slug = require('mongoose-slug-generator');
+// const slug = require('mongoose-slug-generator');
 const mongooseDelete = require('mongoose-delete');
 const Schema = mongoose.Schema;
 
@@ -28,7 +28,7 @@ userSchema.query.sortable = function (req) {
 };
 
 //Add plugin
-mongoose.plugin(slug);
+// mongoose.plugin(slug);
 
 // Course.plugin(AutoIncrement);
 userSchema.plugin(mongooseDelete, {

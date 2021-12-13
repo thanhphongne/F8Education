@@ -16,7 +16,7 @@
                             <h5 class='card-title'>{{this.name}}</h5>
                         </a>
                         <p class='card-text'>{{this.description}}</p>
-                        <form method='POST' action='/cart' >
+                        <form method='POST' action='/cart/{{this.slug}}' >
                         <input type='hidden' name='courseSlug' value='{{this.slug}}'>
                         <input type='hidden' name='name' value='{{this.name}}'>
                             <button type='submit' class='btn btn-primary'>Đánh dấu khóa học</button>

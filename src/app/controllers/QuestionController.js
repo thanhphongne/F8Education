@@ -1,7 +1,18 @@
 const Question = require("../models/Question");
 const { mutipleMongooseToObject } = require("../../util/mongoose");
+const { mongooseToObject } = require('../../util/mongoose');
 
 class QuestionController {
+
+  show(req, res, next) {
+    Question.findOne({ slug: req.params.slug })
+        .then((question) => {
+            res.render('question/show', {
+              question: mongooseToObject(question),
+            });
+        })
+        .catch(next);
+}
   //[POST] /question/store
   store(req, res, next) {
     req.body.image = req.file.path.split("\\").slice(2).join("/");
@@ -24,8 +35,9 @@ class QuestionController {
   }
   //[PUT] /question/:id
   answer(req, res, next) {
-    Question.updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect("/question"))
+    console.log(req.body.answers);
+    Question.updateOne({ _id: req.params.id }, { $push: { answers: req.body.answers } })
+      .then(() => res.redirect("back"))
       .catch(next);
   }
 }
